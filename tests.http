@@ -1,0 +1,17 @@
+
+POST  http://localhost:3003/api/blogs HTTP/1.1
+content-type: application/json
+
+{
+    "title": "The end",
+    "author": "mike miers",
+    "url": "www.books.com",
+   "likes": 23
+}
+
+
+###
+
+GET http://localhost:3003/api/blogs HTTP/1.1
+
+###
