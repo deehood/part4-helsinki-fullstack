@@ -1,4 +1,4 @@
-const blog = require("../models/blog");
+const _ = require("lodash");
 
 const dummy = (blogs) => {
     return 1;
@@ -26,8 +26,23 @@ const favoriteBlog = (blogs) => {
     };
 };
 
+const getKeyByValue = (object, value) => {
+    return Object.keys(object).find((key) => object[key] === value);
+};
+// returns object with authors and accumulated blog posts
+const mostBlogs = (blogs) => {
+    const authorsBlogCount = _.countBy(blogs, (blog) => blog.author);
+
+    const max = Math.max(...Object.values(authorsBlogCount));
+
+    return {
+        author: getKeyByValue(authorsBlogCount, max),
+        blogs: max,
+    };
+};
 module.exports = {
     dummy,
     totaLikes,
     favoriteBlog,
+    mostBlogs,
 };

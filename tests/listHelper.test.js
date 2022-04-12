@@ -75,13 +75,23 @@ const blogs = [
 //     });
 // });
 
-describe("Favorite blog", () => {
-    test("normal", () => {
-        const result = listHelper.favoriteBlog(blogs);
+// describe("Favorite blog", () => {
+//     test("normal", () => {
+//         const result = listHelper.favoriteBlog(blogs);
+//         expect(result).toEqual({
+//             title: "Canonical string reduction",
+//             author: "Edsger W. Dijkstra",
+//             likes: 12,
+//         });
+//     });
+// });
+
+describe(" Most Blogs", () => {
+    test("most blogs", () => {
+        const result = listHelper.mostBlogs(blogs);
         expect(result).toEqual({
-            title: "Canonical string reduction",
-            author: "Edsger W. Dijkstra",
-            likes: 12,
+            author: "Robert C. Martin",
+            blogs: 3,
         });
     });
 });
