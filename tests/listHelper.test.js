@@ -1,12 +1,5 @@
 const listHelper = require("../utils/list_helper");
 
-test("dummy returns one", () => {
-    const blogs = [];
-
-    const result = listHelper.dummy(blogs);
-    expect(result).toBe(1);
-});
-
 const blogs = [
     {
         _id: "5a422a851b54a676234d17f7",
@@ -58,6 +51,13 @@ const blogs = [
     },
 ];
 
+test("dummy returns one", () => {
+    const blogs = [];
+
+    const result = listHelper.dummy(blogs);
+    expect(result).toBe(1);
+});
+
 describe("total likes", () => {
     test("Empty list returns 0", () => {
         const result = listHelper.totaLikes([]);
@@ -86,7 +86,7 @@ describe("Favorite blog", () => {
     });
 });
 
-describe(" Most Blogs", () => {
+describe(" Most tests", () => {
     test("most blogs", () => {
         const result = listHelper.mostBlogs(blogs);
         expect(result).toEqual({
