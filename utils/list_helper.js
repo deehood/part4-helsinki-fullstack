@@ -1,3 +1,5 @@
+const blog = require("../models/blog");
+
 const dummy = (blogs) => {
     return 1;
 };
@@ -12,7 +14,20 @@ const totaLikes = (blogs) => {
     return total;
 };
 
+const favoriteBlog = (blogs) => {
+    const maxLikes = Math.max(...blogs.map((x) => x.likes));
+
+    const favoriteBlog = blogs.find((blog) => blog.likes === maxLikes);
+
+    return {
+        title: favoriteBlog.title,
+        author: favoriteBlog.author,
+        likes: maxLikes,
+    };
+};
+
 module.exports = {
     dummy,
     totaLikes,
+    favoriteBlog,
 };
