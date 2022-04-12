@@ -1,11 +1,11 @@
 const listHelper = require("../utils/list_helper");
 
-// test("dummy returns one", () => {
-//     const blogs = [];
+test("dummy returns one", () => {
+    const blogs = [];
 
-//     const result = listHelper.dummy(blogs);
-//     expect(result).toBe(1);
-// });
+    const result = listHelper.dummy(blogs);
+    expect(result).toBe(1);
+});
 
 const blogs = [
     {
@@ -58,33 +58,33 @@ const blogs = [
     },
 ];
 
-// describe("total likes", () => {
-//     test("Empty list returns 0", () => {
-//         const result = listHelper.totaLikes([]);
-//         expect(result).toBe(0);
-//     });
+describe("total likes", () => {
+    test("Empty list returns 0", () => {
+        const result = listHelper.totaLikes([]);
+        expect(result).toBe(0);
+    });
 
-//     test("only 1 blog equals its likes", () => {
-//         const result = listHelper.totaLikes([blogs[1]]);
-//         expect(result).toBe(5);
-//     });
+    test("only 1 blog equals its likes", () => {
+        const result = listHelper.totaLikes([blogs[1]]);
+        expect(result).toBe(5);
+    });
 
-//     test("All list", () => {
-//         const result = listHelper.totaLikes(blogs);
-//         expect(result).toBe(36);
-//     });
-// });
+    test("All list", () => {
+        const result = listHelper.totaLikes(blogs);
+        expect(result).toBe(36);
+    });
+});
 
-// describe("Favorite blog", () => {
-//     test("normal", () => {
-//         const result = listHelper.favoriteBlog(blogs);
-//         expect(result).toEqual({
-//             title: "Canonical string reduction",
-//             author: "Edsger W. Dijkstra",
-//             likes: 12,
-//         });
-//     });
-// });
+describe("Favorite blog", () => {
+    test("normal", () => {
+        const result = listHelper.favoriteBlog(blogs);
+        expect(result).toEqual({
+            title: "Canonical string reduction",
+            author: "Edsger W. Dijkstra",
+            likes: 12,
+        });
+    });
+});
 
 describe(" Most Blogs", () => {
     test("most blogs", () => {
@@ -92,6 +92,14 @@ describe(" Most Blogs", () => {
         expect(result).toEqual({
             author: "Robert C. Martin",
             blogs: 3,
+        });
+    });
+
+    test("most Likes", () => {
+        const result = listHelper.mostLikes(blogs);
+        expect(result).toEqual({
+            author: "Edsger W. Dijkstra",
+            likes: 12,
         });
     });
 });
