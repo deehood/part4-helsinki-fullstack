@@ -3,7 +3,7 @@ POST  http://localhost:3001/api/blogs HTTP/1.1
 content-type: application/json
 
 {
-    "title": "The end",
+    "title": "The real end",
     "author": "mike miers",
     "url": "www.books.com",
    "likes": 23
