@@ -6,7 +6,7 @@ content-type: application/json
     "title": "The real end",
     "author": "mike miers",
     "url": "www.books.com",
-   "likes": 23
+   "likes": 6
 }
 
 
