@@ -1,6 +1,6 @@
 const listHelper = require("../utils/list_helper");
 
-const blogs = [
+const initialBlogs = [
     {
         _id: "5a422a851b54a676234d17f7",
         title: "React patterns",
@@ -52,9 +52,9 @@ const blogs = [
 ];
 
 test("dummy returns one", () => {
-    const blogs = [];
+    const initialBlogs = [];
 
-    const result = listHelper.dummy(blogs);
+    const result = listHelper.dummy(initialBlogs);
     expect(result).toBe(1);
 });
 
@@ -65,19 +65,19 @@ describe("total likes", () => {
     });
 
     test("only 1 blog equals its likes", () => {
-        const result = listHelper.totaLikes([blogs[1]]);
+        const result = listHelper.totaLikes([initialBlogs[1]]);
         expect(result).toBe(5);
     });
 
     test("All list", () => {
-        const result = listHelper.totaLikes(blogs);
+        const result = listHelper.totaLikes(initialBlogs);
         expect(result).toBe(36);
     });
 });
 
 describe("Favorite blog", () => {
     test("normal", () => {
-        const result = listHelper.favoriteBlog(blogs);
+        const result = listHelper.favoriteBlog(initialBlogs);
         expect(result).toEqual({
             title: "Canonical string reduction",
             author: "Edsger W. Dijkstra",
@@ -87,8 +87,8 @@ describe("Favorite blog", () => {
 });
 
 describe(" Most tests", () => {
-    test("most blogs", () => {
-        const result = listHelper.mostBlogs(blogs);
+    test("most initialBlogs", () => {
+        const result = listHelper.mostBlogs(initialBlogs);
         expect(result).toEqual({
             author: "Robert C. Martin",
             blogs: 3,
@@ -96,10 +96,12 @@ describe(" Most tests", () => {
     });
 
     test("most Likes", () => {
-        const result = listHelper.mostLikes(blogs);
+        const result = listHelper.mostLikes(initialBlogs);
         expect(result).toEqual({
             author: "Edsger W. Dijkstra",
             likes: 12,
         });
     });
 });
+
+module.exports = initialBlogs;
