@@ -2,7 +2,7 @@ const mongoose = require("mongoose");
 const supertest = require("supertest");
 const app = require("../app");
 const Blog = require("../models/blog");
-const initialBlogs = require("./listHelper.test");
+const initialBlogs = require("./blog_initial_data");
 
 const api = supertest(app);
 
@@ -17,7 +17,7 @@ beforeEach(async () => {
     }
 });
 
-test.only("blogs are returned as json", async () => {
+test("blogs are returned as json", async () => {
     console.log("entered test");
     await api
         .get("/api/blogs")
