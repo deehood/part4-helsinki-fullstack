@@ -40,7 +40,11 @@ describe("API tests", () => {
         }
     });
 
-    test("check HTTP POST", () => {});
+    test("check HTTP POST", () => {
+
+        const response = await api.put
+
+    });
 });
 
 afterAll(() => {
