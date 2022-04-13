@@ -18,7 +18,6 @@ beforeEach(async () => {
 });
 
 test("blogs are returned as json", async () => {
-    console.log("entered test");
     await api
         .get("/api/blogs")
         .expect(200)
