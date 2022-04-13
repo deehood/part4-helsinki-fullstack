@@ -1,9 +1,8 @@
-const { application } = require("express");
 const mongoose = require("mongoose");
 const supertest = require("supertest");
 const app = require("../app");
 const Blog = require("../models/blog");
-const initialBlogs = require("./blog_initial_data");
+const { initialBlogs, testBlog } = require("./blog_initial_data");
 
 const api = supertest(app);
 
@@ -40,6 +39,8 @@ describe("API tests", () => {
             // console.log(`record ${i}`);
         }
     });
+
+    test("check HTTP POST", () => {});
 });
 
 afterAll(() => {

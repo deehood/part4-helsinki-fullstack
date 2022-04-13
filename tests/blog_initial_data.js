@@ -1,3 +1,12 @@
+const blogTest = {
+    _id: "5a422a851b38276234d17f7",
+    title: "just the HTTP PUT test",
+    author: "Some Dev",
+    url: "https://idontknow.com/",
+    likes: 3,
+    __v: 0,
+};
+
 const initialBlogs = [
     {
         _id: "5a422a851b54a676234d17f7",
@@ -49,4 +58,4 @@ const initialBlogs = [
     },
 ];
 
-module.exports = initialBlogs;
+module.exports = { initialBlogs, blogTest };
