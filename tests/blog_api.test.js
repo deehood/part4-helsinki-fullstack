@@ -1,3 +1,4 @@
+const { application } = require("express");
 const mongoose = require("mongoose");
 const supertest = require("supertest");
 const app = require("../app");
@@ -17,17 +18,28 @@ beforeEach(async () => {
     }
 });
 
-test("blogs are returned as json", async () => {
-    await api
-        .get("/api/blogs")
-        .expect(200)
-        .expect("Content-Type", /application\/json/);
-}, 100000);
+describe("API tests", () => {
+    test("blogs are returned as json", async () => {
+        await api
+            .get("/api/blogs")
+            .expect(200)
+            .expect("Content-Type", /application\/json/);
+    }, 100000);
 
-test("there are 6 blogs", async () => {
-    const response = await api.get("/api/blogs");
+    test("there are 6 blogs", async () => {
+        const response = await api.get("/api/blogs");
 
-    expect(response.body).toHaveLength(6);
+        expect(response.body).toHaveLength(6);
+    });
+
+    test("Check if 'id' exists", async () => {
+        const response = await api.get("/api/blogs");
+        const data = response.body;
+        for (let i = 0; i < data.length; i++) {
+            expect(data[i].id).toBeDefined();
+            // console.log(`record ${i}`);
+        }
+    });
 });
 
 afterAll(() => {

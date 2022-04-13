@@ -1,14 +1,16 @@
 const listHelper = require("../utils/list_helper");
 const initialBlogs = require("./blog_initial_data");
 
-test("dummy returns one", () => {
-    const initialBlogs = [];
+describe("Dummy test", () => {
+    test("dummy returns one", () => {
+        const initialBlogs = [];
 
-    const result = listHelper.dummy(initialBlogs);
-    expect(result).toBe(1);
+        const result = listHelper.dummy(initialBlogs);
+        expect(result).toBe(1);
+    });
 });
 
-describe("total likes", () => {
+describe("Likes tests", () => {
     test("Empty list returns 0", () => {
         const result = listHelper.totaLikes([]);
         expect(result).toBe(0);
@@ -19,25 +21,14 @@ describe("total likes", () => {
         expect(result).toBe(5);
     });
 
-    test("All list", () => {
+    test("Sum of all likes", () => {
         const result = listHelper.totaLikes(initialBlogs);
         expect(result).toBe(36);
     });
 });
 
-describe("Favorite blog", () => {
-    test("normal", () => {
-        const result = listHelper.favoriteBlog(initialBlogs);
-        expect(result).toEqual({
-            title: "Canonical string reduction",
-            author: "Edsger W. Dijkstra",
-            likes: 12,
-        });
-    });
-});
-
 describe(" Most tests", () => {
-    test("most initialBlogs", () => {
+    test("Who has most blogs", () => {
         const result = listHelper.mostBlogs(initialBlogs);
         expect(result).toEqual({
             author: "Robert C. Martin",
@@ -45,9 +36,18 @@ describe(" Most tests", () => {
         });
     });
 
-    test("most Likes", () => {
+    test("Who has most Likes", () => {
         const result = listHelper.mostLikes(initialBlogs);
         expect(result).toEqual({
+            author: "Edsger W. Dijkstra",
+            likes: 12,
+        });
+    });
+
+    test("Blog with the most likes", () => {
+        const result = listHelper.favoriteBlog(initialBlogs);
+        expect(result).toEqual({
+            title: "Canonical string reduction",
             author: "Edsger W. Dijkstra",
             likes: 12,
         });
