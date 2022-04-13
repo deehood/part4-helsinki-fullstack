@@ -2,8 +2,13 @@ const blogRouter = require("express").Router();
 const Blog = require("../models/blog");
 
 blogRouter.get("/", async (request, response) => {
+    //express-async-errors is taking care of try catch
+    // try {
     const blogs = await Blog.find({});
     response.json(blogs);
+    // } catch (exception) {
+    //     next(exception);
+    // }
 });
 
 blogRouter.post("/", async (request, response) => {
