@@ -2,7 +2,7 @@ const mongoose = require("mongoose");
 const supertest = require("supertest");
 const app = require("../app");
 const Blog = require("../models/blog");
-const { initialBlogs, testBlog } = require("./blog_initial_data");
+const { initialBlogs, exampleBlog } = require("./blog_initial_data");
 
 const api = supertest(app);
 
@@ -16,6 +16,12 @@ beforeEach(async () => {
         await blogObject.save();
     }
 });
+
+const getFileSize = async () => {
+    const response = await api.get("/api/blogs");
+    const data = response.body;
+    return data.length;
+};
 
 describe("API tests", () => {
     test("blogs are returned as json", async () => {
@@ -40,13 +46,19 @@ describe("API tests", () => {
         }
     });
 
-    test("check HTTP POST", () => {
-
-        const response = await api.put
-
+    describe("check HTTP POST", () => {
+        test("check 201 status", async () => {
+            const response = await api.post("/api/blogs", exampleBlog);
+            expect(response.status).toBe(201);
+        });
+        test("check that blogs increase by 1", async () => {
+            const beforeFileSize = await getFileSize();
+            await api.post("/api/blogs", exampleBlog);
+            const afterFileSize = await getFileSize();
+            expect(afterFileSize).toBe(beforeFileSize + 1);
+        });
     });
 });
-
 afterAll(() => {
     mongoose.connection.close();
 });

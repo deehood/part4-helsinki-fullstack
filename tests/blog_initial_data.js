@@ -1,4 +1,4 @@
-const blogTest = {
+const exampleBlog = {
     _id: "5a422a851b38276234d17f7",
     title: "just the HTTP PUT test",
     author: "Some Dev",
@@ -58,4 +58,4 @@ const initialBlogs = [
     },
 ];
 
-module.exports = { initialBlogs, blogTest };
+module.exports = { initialBlogs, exampleBlog };

@@ -1,5 +1,5 @@
 const listHelper = require("../utils/list_helper");
-const initialBlogs = require("./blog_initial_data");
+const { initialBlogs } = require("./blog_initial_data");
 
 describe("Dummy test", () => {
     test("dummy returns one", () => {
