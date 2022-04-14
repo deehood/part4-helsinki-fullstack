@@ -14,7 +14,12 @@ blogRouter.get("/", async (request, response) => {
 blogRouter.post("/", async (request, response) => {
     const blog = new Blog(request.body);
 
+    // deaults to 0 if not present
+
+    if (!("likes" in blog.toJSON())) blog["likes"] = 0;
+
     const result = await blog.save();
+
     response.status(201).json(result);
 });
 

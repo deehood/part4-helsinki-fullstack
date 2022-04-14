@@ -9,7 +9,7 @@ const api = supertest(app);
 beforeEach(async () => {
     await Blog.deleteMany({});
 
-    // foreach is a function and await will only run correctly in its scope and not in beforeeach
+    // foreach is a function and await will only run correctly in its scope and not in beforeEach
     for (let blog of initialBlogs) {
         let blogObject = new Blog(blog);
 
@@ -48,14 +48,30 @@ describe("API tests", () => {
 
     describe("check HTTP POST", () => {
         test("check 201 status", async () => {
-            const response = await api.post("/api/blogs", exampleBlog);
+            const response = await api.post("/api/blogs").send(exampleBlog);
             expect(response.status).toBe(201);
         });
+
         test("check that blogs increase by 1", async () => {
             const beforeFileSize = await getFileSize();
-            await api.post("/api/blogs", exampleBlog);
+            await api.post("/api/blogs").send(exampleBlog);
             const afterFileSize = await getFileSize();
             expect(afterFileSize).toBe(beforeFileSize + 1);
+        });
+
+        test("check likes is defined otherwise defaults to 0", async () => {
+            const result = await api.post("/api/blogs").send(exampleBlog);
+
+            if (!result.likes) {
+                const blogs = await api.get("/api/blogs");
+                const idNewPost = blogs.body[blogs.body.length - 1].id;
+
+                const newPost = blogs.body.find(
+                    (blog) => blog.id === idNewPost
+                );
+
+                expect(newPost.likes).toBeDefined();
+            }
         });
     });
 });
