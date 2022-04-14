@@ -12,18 +12,16 @@ beforeEach(async () => {
     // foreach is a function and await will only run correctly in its scope and not in beforeEach
     for (let blog of initialBlogs) {
         let blogObject = new Blog(blog);
-
         await blogObject.save();
     }
 });
 
-const readFullDb = async () => {
-    const response = await api.get("/api/blogs");
-    const data = response.toJSON();
-    console.log(data);
-    console.log(data.body);
-    return data;
-};
+// const readFullDb = async () => {
+//     const response = await api.get("/api/blogs");
+//     console.log(response.body);
+//     const data = await JSON.parse(JSON.stringify(response));
+//     console.log(data.body);
+// };
 
 let exampleBlog = {
     title: "just the HTTP PUT test",
@@ -35,7 +33,7 @@ let exampleBlog = {
 const getFileSize = async () => {
     const response = await api.get("/api/blogs");
     const data = response.body;
-    console.log(data.length);
+
     return data.length;
 };
 
@@ -47,7 +45,7 @@ describe("API tests", () => {
             .expect("Content-Type", /application\/json/);
     }, 100000);
 
-    test("there are 6 blogs", async () => {
+    test("there are 6 initial  blogs", async () => {
         const response = await api.get("/api/blogs");
 
         expect(response.body).toHaveLength(6);
@@ -62,13 +60,25 @@ describe("API tests", () => {
         }
     });
 
-    describe("check HTTP DELETE", () => {
-        test("204 if its valid", async () => {
-            const data = readFullDb();
+    describe.only("check HTTP DELETE", () => {
+        test("Deletes random blog, 204, and 1 less blog", async () => {
+            const beforeFileSize = await getFileSize();
+            const blogs = await api.get("/api/blogs");
+
+            const index = 1;
+            // const index = Math.floor(Math.random() * beforeFileSize);
+
+            const id = blogs.body[index].id;
+
+            const response = await api.delete(`/api/blogs/${id}`);
+            expect(response.status).toBe(204);
+
+            const afterFileSize = await getFileSize();
+            expect(afterFileSize).toBe(beforeFileSize - 1);
         });
     });
 
-    describe.only("check HTTP POST", () => {
+    describe("check HTTP POST", () => {
         test("check 201 status", async () => {
             const response = await api.post("/api/blogs").send(exampleBlog);
             expect(response.status).toBe(201);

@@ -5,9 +5,14 @@ blogRouter.get("/", async (request, response) => {
     //express-async-errors is taking care of try catch
 
     const blogs = await Blog.find({});
-    response.json(blogs);
 
-    console.log(response.json(blogs));
+    response.json(blogs);
+});
+
+blogRouter.delete("/:id", async (request, response) => {
+    await Blog.findByIdAndRemove(request.params.id);
+
+    response.status(204).end();
 });
 
 blogRouter.post("/", async (request, response) => {
@@ -20,17 +25,13 @@ blogRouter.post("/", async (request, response) => {
     // sends 400 status if both url and title not present
 
     if (!("title" in blog.toJSON()) && !("url" in blog.toJSON())) {
-        response.status(400).send();
+        response.status(400).end();
         return;
     }
 
     const result = await blog.save();
 
     response.status(201).json(result);
-    console.log(result);
-
-    const tests = await Blog.find({});
-    console.log(response.json(tests));
 });
 
 module.exports = blogRouter;
