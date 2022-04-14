@@ -23,6 +23,7 @@ let exampleBlog = {
     url: "https://idontknow.com/",
     likes: 3,
 };
+
 const getFileSize = async () => {
     const response = await api.get("/api/blogs");
     const data = response.body;
@@ -56,6 +57,12 @@ describe("API tests", () => {
         test("check 201 status", async () => {
             const response = await api.post("/api/blogs").send(exampleBlog);
             expect(response.status).toBe(201);
+        });
+
+        test("check if id is present", async () => {
+            const result = await api.post("/api/blogs").send(exampleBlog);
+
+            expect(result.body.id).toBeDefined;
         });
 
         test("check that blogs increase by 1", async () => {
