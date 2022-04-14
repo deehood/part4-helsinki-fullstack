@@ -1,7 +1,7 @@
 const exampleBlog = {
-    title: "just the HTTP PUT test",
+    // title: "just the HTTP PUT test",
     author: "Some Dev",
-    url: "https://idontknow.com/",
+    // url: "https://idontknow.com/",
     // likes: 3,
 };
 const initialBlogs = [

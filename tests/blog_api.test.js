@@ -62,7 +62,7 @@ describe("API tests", () => {
         test("check likes is defined otherwise defaults to 0", async () => {
             const result = await api.post("/api/blogs").send(exampleBlog);
 
-            if (!result.likes) {
+            if (!("likes" in result.toJSON())) {
                 const blogs = await api.get("/api/blogs");
                 const idNewPost = blogs.body[blogs.body.length - 1].id;
 
@@ -71,6 +71,15 @@ describe("API tests", () => {
                 );
 
                 expect(newPost.likes).toBeDefined();
+            }
+        });
+
+        test("check if tile and url present otherwise status 400", async () => {
+            const result = await api.post("/api/blogs").send(exampleBlog);
+
+            console.log(Object.keys(result.body));
+            if (!(("title" || "url") in result.body)) {
+                expect(result.status).toBe(400);
             }
         });
     });
