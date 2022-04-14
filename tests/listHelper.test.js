@@ -53,5 +53,3 @@ describe(" Most tests", () => {
         });
     });
 });
-
-module.exports = initialBlogs;

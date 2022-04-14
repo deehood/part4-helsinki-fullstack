@@ -3,12 +3,11 @@ const Blog = require("../models/blog");
 
 blogRouter.get("/", async (request, response) => {
     //express-async-errors is taking care of try catch
-    // try {
+
     const blogs = await Blog.find({});
     response.json(blogs);
-    // } catch (exception) {
-    //     next(exception);
-    // }
+
+    console.log(response.json(blogs));
 });
 
 blogRouter.post("/", async (request, response) => {
@@ -28,6 +27,10 @@ blogRouter.post("/", async (request, response) => {
     const result = await blog.save();
 
     response.status(201).json(result);
+    console.log(result);
+
+    const tests = await Blog.find({});
+    console.log(response.json(tests));
 });
 
 module.exports = blogRouter;

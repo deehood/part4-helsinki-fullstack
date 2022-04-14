@@ -17,6 +17,14 @@ beforeEach(async () => {
     }
 });
 
+const readFullDb = async () => {
+    const response = await api.get("/api/blogs");
+    const data = response.toJSON();
+    console.log(data);
+    console.log(data.body);
+    return data;
+};
+
 let exampleBlog = {
     title: "just the HTTP PUT test",
     author: "Some Dev",
@@ -27,6 +35,7 @@ let exampleBlog = {
 const getFileSize = async () => {
     const response = await api.get("/api/blogs");
     const data = response.body;
+    console.log(data.length);
     return data.length;
 };
 
@@ -53,7 +62,13 @@ describe("API tests", () => {
         }
     });
 
-    describe("check HTTP POST", () => {
+    describe("check HTTP DELETE", () => {
+        test("204 if its valid", async () => {
+            const data = readFullDb();
+        });
+    });
+
+    describe.only("check HTTP POST", () => {
         test("check 201 status", async () => {
             const response = await api.post("/api/blogs").send(exampleBlog);
             expect(response.status).toBe(201);
