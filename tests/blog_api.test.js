@@ -2,7 +2,7 @@ const mongoose = require("mongoose");
 const supertest = require("supertest");
 const app = require("../app");
 const Blog = require("../models/blog");
-const { initialBlogs, exampleBlog } = require("./blog_initial_data");
+const initialBlogs = require("./blog_initial_data");
 
 const api = supertest(app);
 
@@ -17,6 +17,12 @@ beforeEach(async () => {
     }
 });
 
+let exampleBlog = {
+    title: "just the HTTP PUT test",
+    author: "Some Dev",
+    url: "https://idontknow.com/",
+    likes: 3,
+};
 const getFileSize = async () => {
     const response = await api.get("/api/blogs");
     const data = response.body;
@@ -60,6 +66,12 @@ describe("API tests", () => {
         });
 
         test("check likes is defined otherwise defaults to 0", async () => {
+            exampleBlog = {
+                title: "just the HTTP PUT test",
+                author: "Some Dev",
+                url: "https://idontknow.com/",
+                // likes: 3,
+            };
             const result = await api.post("/api/blogs").send(exampleBlog);
 
             if (!("likes" in result.toJSON())) {
@@ -75,10 +87,15 @@ describe("API tests", () => {
         });
 
         test("check if tile and url present otherwise status 400", async () => {
+            exampleBlog = {
+                // title: "just the HTTP PUT test",
+                author: "Some Dev",
+                // url: "https://idontknow.com/",
+                likes: 3,
+            };
             const result = await api.post("/api/blogs").send(exampleBlog);
 
-            console.log(Object.keys(result.body));
-            if (!(("title" || "url") in result.body)) {
+            if (!("title" in result.body) && !("url" in result.body)) {
                 expect(result.status).toBe(400);
             }
         });

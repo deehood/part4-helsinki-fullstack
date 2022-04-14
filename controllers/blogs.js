@@ -18,6 +18,13 @@ blogRouter.post("/", async (request, response) => {
 
     if (!("likes" in blog.toJSON())) blog["likes"] = 0;
 
+    // sends 400 status if both url and title not present
+
+    if (!("title" in blog.toJSON()) && !("url" in blog.toJSON())) {
+        response.status(400).send();
+        return;
+    }
+
     const result = await blog.save();
 
     response.status(201).json(result);

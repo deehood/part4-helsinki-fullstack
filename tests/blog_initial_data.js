@@ -1,9 +1,3 @@
-const exampleBlog = {
-    // title: "just the HTTP PUT test",
-    author: "Some Dev",
-    // url: "https://idontknow.com/",
-    // likes: 3,
-};
 const initialBlogs = [
     {
         id: "5a422a851b54a676234d17f7",
@@ -49,4 +43,4 @@ const initialBlogs = [
     },
 ];
 
-module.exports = { initialBlogs, exampleBlog };
+module.exports = initialBlogs;
