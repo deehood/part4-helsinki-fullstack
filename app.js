@@ -25,8 +25,9 @@ app.use(express.static("build"));
 app.use(express.json());
 
 app.use("/api/blogs", blogsRouter);
-app.use(middleware.requestLogger);
+app.use("api/users", blogsRouter);
 
+app.use(middleware.requestLogger);
 app.use(middleware.unknownEndpoint);
 app.use(middleware.errorHandler);
 
