@@ -12,48 +12,91 @@ beforeEach(async () => {
     // foreach is a function and await will only run correctly in its scope and not in beforeEach
     for (let blog of initialBlogs) {
         let blogObject = new Blog(blog);
-
         await blogObject.save();
     }
 });
 
-let exampleBlog = {
-    title: "just the HTTP PUT test",
-    author: "Some Dev",
-    url: "https://idontknow.com/",
-    likes: 3,
-};
-
 const getFileSize = async () => {
     const response = await api.get("/api/blogs");
     const data = response.body;
+
     return data.length;
 };
 
 describe("API tests", () => {
-    test("blogs are returned as json", async () => {
-        await api
-            .get("/api/blogs")
-            .expect(200)
-            .expect("Content-Type", /application\/json/);
-    }, 100000);
+    describe("check GET HTTP", () => {
+        test("blogs are returned as json", async () => {
+            await api
+                .get("/api/blogs")
+                .expect(200)
+                .expect("Content-Type", /application\/json/);
+        }, 100000);
 
-    test("there are 6 blogs", async () => {
-        const response = await api.get("/api/blogs");
+        test("there are 6 initial  blogs", async () => {
+            const response = await api.get("/api/blogs");
 
-        expect(response.body).toHaveLength(6);
+            expect(response.body).toHaveLength(6);
+        });
+
+        test("Check if 'id' exists", async () => {
+            const response = await api.get("/api/blogs");
+            const data = response.body;
+            for (let i = 0; i < data.length; i++) {
+                expect(data[i].id).toBeDefined();
+                // console.log(`record ${i}`);
+            }
+        });
+    });
+    describe("check HTTP PUT ", () => {
+        test("check for 200 code and updated blog", async () => {
+            const exampleBlog = {
+                title: "just the HTTP PUT test",
+                author: "Some Dev",
+                url: "https://idontknow.com/",
+                likes: 4,
+            };
+
+            const blogs = await api.get("/api/blogs");
+            const index = 1;
+            const id = blogs.body[index].id;
+
+            const response = await api
+                .put(`/api/blogs/${id}`)
+                .send(exampleBlog);
+
+            expect(response.status).toBe(204);
+
+            const response2 = await api.get(`/api/blogs/${id}`);
+
+            expect(response2.body.likes).toBe(exampleBlog.likes);
+        });
     });
 
-    test("Check if 'id' exists", async () => {
-        const response = await api.get("/api/blogs");
-        const data = response.body;
-        for (let i = 0; i < data.length; i++) {
-            expect(data[i].id).toBeDefined();
-            // console.log(`record ${i}`);
-        }
+    describe("check HTTP DELETE", () => {
+        test("Deletes random blog, 204, and 1 less blog", async () => {
+            const beforeFileSize = await getFileSize();
+            const blogs = await api.get("/api/blogs");
+
+            const index = 1;
+            // const index = Math.floor(Math.random() * beforeFileSize);
+
+            const id = blogs.body[index].id;
+
+            const response = await api.delete(`/api/blogs/${id}`);
+            expect(response.status).toBe(204);
+
+            const afterFileSize = await getFileSize();
+            expect(afterFileSize).toBe(beforeFileSize - 1);
+        });
     });
 
     describe("check HTTP POST", () => {
+        let exampleBlog = {
+            title: "this is a generic test",
+            author: "Some Dev",
+            url: "https://idontknow.com/",
+            likes: 3,
+        };
         test("check 201 status", async () => {
             const response = await api.post("/api/blogs").send(exampleBlog);
             expect(response.status).toBe(201);
@@ -73,8 +116,8 @@ describe("API tests", () => {
         });
 
         test("check likes is defined otherwise defaults to 0", async () => {
-            exampleBlog = {
-                title: "just the HTTP PUT test",
+            let exampleBlog = {
+                title: "just the HTTP POST test at the end",
                 author: "Some Dev",
                 url: "https://idontknow.com/",
                 // likes: 3,
