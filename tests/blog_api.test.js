@@ -2,7 +2,7 @@ const mongoose = require("mongoose");
 const supertest = require("supertest");
 const app = require("../app");
 const Blog = require("../models/blog");
-const { initialBlogs, getFileSizeDatabase } = require("./test_helper");
+const { initialBlogs } = require("./test_helper");
 
 const api = supertest(app);
 
@@ -67,9 +67,8 @@ describe("Blog API tests", () => {
 
     describe("check HTTP DELETE", () => {
         test("Deletes random blog, 204, and 1 less blog", async () => {
-            const beforeFileSize = await getFileSizeDatabase(Blog);
-            const blogs = await api.get("/api/blogs");
-
+            let blogs = await api.get("/api/blogs");
+            const beforeFileSize = blogs.body.length;
             const index = 1;
             // const index = Math.floor(Math.random() * beforeFileSize);
 
@@ -78,7 +77,9 @@ describe("Blog API tests", () => {
             const response = await api.delete(`/api/blogs/${id}`);
             expect(response.status).toBe(204);
 
-            const afterFileSize = await getFileSizeDatabase(Blog);
+            blogs = await api.get("/api/blogs");
+            const afterFileSize = blogs.body.length;
+
             expect(afterFileSize).toBe(beforeFileSize - 1);
         });
     });
@@ -102,9 +103,13 @@ describe("Blog API tests", () => {
         });
 
         test("check that blogs increase by 1", async () => {
-            const beforeFileSize = await getFileSizeDatabase(Blog);
+            let blogs = await api.get("/api/blogs");
+            const beforeFileSize = blogs.body.length;
+
             await api.post("/api/blogs").send(exampleBlog);
-            const afterFileSize = await getFileSizeDatabase(Blog);
+
+            blogs = await api.get("/api/blogs");
+            afterFileSize = blogs.body.length;
             expect(afterFileSize).toBe(beforeFileSize + 1);
         });
 

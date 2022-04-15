@@ -3,7 +3,7 @@
 const { response } = require("../app");
 
 // const Blog = require("../models/blog");
-// const User = require("../models/user");
+const User = require("../models/user");
 
 const initialUsers = [
     {
@@ -57,14 +57,11 @@ const initialBlogs = [
     },
 ];
 
-const getFileSizeDatabase = async (database) => {
-    const response = await database.find({});
-    return response.length;
-};
-
 const getUsernames = async (database) => {
     const response = await database.find({});
-    return response.body.map((user) => user.username);
+
+    const temp = await response.body.map((user) => user.username);
+    console.log(temp);
 };
 
 // eslint-disable-next-line no-unused-vars
@@ -142,6 +139,5 @@ module.exports = {
     mostLikes,
     initialBlogs,
     initialUsers,
-    getFileSizeDatabase,
     getUsernames,
 };
