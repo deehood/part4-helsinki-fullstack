@@ -1,8 +1,8 @@
 // const _ = require("lodash");
 
-const { response } = require("../app");
+// const { response } = require("../app");
 
-// const Blog = require("../models/blog");
+const Blog = require("../models/blog");
 const User = require("../models/user");
 
 const initialUsers = [
@@ -60,8 +60,7 @@ const initialBlogs = [
 const getUsernames = async (database) => {
     const response = await database.find({});
 
-    const temp = await response.body.map((user) => user.username);
-    console.log(temp);
+    console.log(response.body);
 };
 
 // eslint-disable-next-line no-unused-vars

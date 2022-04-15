@@ -17,7 +17,10 @@ beforeEach(async () => {
 });
 
 describe("USER API tests", () => {
-    test("primeiro", () => {
-        console.log(getUsernames(User));
+    test("primeiro", async () => {
+        console.log(User);
+        const ok = await getUsernames(User);
+
+        console.log(ok);
     });
 });
