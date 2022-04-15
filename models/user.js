@@ -16,4 +16,12 @@ blogSchema.set("toJSON", {
     },
 });
 
-module.exports = mongoose.model("Blog", blogSchema);
+const userSchema = new mongoose.Schema({
+    content: {
+        username: string,
+        name: string,
+        password: string,
+    blogs: { type: mongoose.Schema.Types.ObjectId, ref: "User" },
+});
+
+module.exports = mongoose.model("User", userSchema);
