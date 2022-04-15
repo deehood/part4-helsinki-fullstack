@@ -1,4 +1,4 @@
-const _ = require("lodash");
+// const _ = require("lodash");
 
 const dummy = (blogs) => {
     return 1;
@@ -31,7 +31,17 @@ const getKeyByValue = (object, value) => {
 };
 // returns object with authors and accumulated blog posts
 const mostBlogs = (blogs) => {
-    const authorsBlogCount = _.countBy(blogs, (blog) => blog.author);
+    // LODASH method
+    // const authorsBlogCount = _.countBy(blogs, (blog) => blog.author);
+
+    // REDUCE method
+
+    const authorsBlogCount = blogs.reduce((accum, cur) => {
+        accum[cur.author] ? (accum[cur.author] += 1) : (accum[cur.author] = 1);
+        return accum;
+    }, {});
+
+    console.log(authorsBlogCount);
 
     const max = Math.max(...Object.values(authorsBlogCount));
 
