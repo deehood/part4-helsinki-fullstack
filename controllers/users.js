@@ -4,12 +4,31 @@ const User = require("../models/user");
 
 userRouter.get("/", async (request, response) => {
     const users = await User.find({});
-    console.log(JSON.stringify(users, null, 4));
-    response.json(JSON.stringify(users, null, 4));
+
+    response.json(users);
 });
 
 userRouter.post("/", async (request, response) => {
     const { username, name, password } = request.body;
+
+    if (!username || !password) {
+        response.status(401).send("Username and Password must be filled");
+        return;
+    }
+
+    if (username.length < 4 || password.length < 4) {
+        response
+            .status(402)
+            .send("Username and Password must have at least 3 characters");
+        return;
+    }
+
+    const users = await User.find({ username });
+
+    if (users.length > 0) {
+        response.status(403).send("Username already existes");
+        return;
+    }
 
     const saltRounds = 10;
     const passwordHash = await bcrypt.hash(password, saltRounds);
