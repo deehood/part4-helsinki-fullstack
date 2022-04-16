@@ -37,7 +37,19 @@ describe("USER API tests", () => {
             password: "zulmira",
         };
         test("status 201", async () => {
-            const result = await api.post("/api/users").send(exampleUser);
+            const result = await api.post("/api/users").json(exampleUser);
+            expect(result.status).toBe(201);
+        });
+    });
+
+    describe("POST tests", () => {
+        const exampleUser = {
+            username: "zorro",
+            name: "zorrito zas",
+            password: "zulmira",
+        };
+        test("status 201", async () => {
+            const result = await api.post("/api/users").json(exampleUser);
             expect(result.status).toBe(201);
         });
     });
