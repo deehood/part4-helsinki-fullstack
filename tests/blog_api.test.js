@@ -27,7 +27,7 @@ describe("Blog API tests", () => {
 
         test("there are 6 initial  blogs", async () => {
             const response = await api.get("/api/blogs");
-            console.log(response.body);
+
             expect(response.body).toHaveLength(6);
         });
 
