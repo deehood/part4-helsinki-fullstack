@@ -1,9 +1,17 @@
 const blogRouter = require("express").Router();
 const Blog = require("../models/blog");
 
+const User = require("../models/user");
+
+const getUserId = async () => {
+    const user = await User.findOne({});
+    return user.id;
+};
+
 blogRouter.get("/", async (request, response) => {
     //express-async-errors is taking care of try catch
-    const blogs = await Blog.find({});
+    const blogs = await Blog.find({}).populate("user");
+
     response.json(blogs);
 });
 
@@ -39,7 +47,15 @@ blogRouter.post("/", async (request, response) => {
         return;
     }
 
+    // Save userid in blog db
+    const userId = await getUserId();
+    blog.user = userId;
     const result = await blog.save();
+
+    // save blogid in userdb
+    const userByID = await User.find(userId);
+    userByID.blogs = blog.id;
+    await userByID.save();
 
     response.status(201).json(result);
 });

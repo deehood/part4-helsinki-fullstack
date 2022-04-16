@@ -137,7 +137,7 @@ describe("Blog API tests", () => {
         test("check if tile and url present otherwise status 400", async () => {
             exampleBlog = {
                 // title: "just the HTTP PUT test",
-                author: "Some Dev",
+                // author: "Some Dev",
                 // url: "https://idontknow.com/",
                 likes: 3,
             };
