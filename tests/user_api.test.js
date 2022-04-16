@@ -2,14 +2,13 @@ const mongoose = require("mongoose");
 const supertest = require("supertest");
 const app = require("../app");
 const User = require("../models/user");
-const { initialUsers, getUsernames } = require("./test_helper");
+const { initialUsers } = require("./test_helper");
 
 const api = supertest(app);
 
 beforeEach(async () => {
     await User.deleteMany({});
 
-    // foreach is a function and await will only run correctly in its scope and not in beforeEach
     for (let user of initialUsers) {
         let userObject = new User(user);
         await userObject.save();
@@ -17,10 +16,33 @@ beforeEach(async () => {
 });
 
 describe("USER API tests", () => {
-    test("primeiro", async () => {
-        console.log(User);
-        const ok = await getUsernames(User);
+    describe("GET tests", () => {
+        test("users are returned as json", async () => {
+            await api
+                .get("/api/users")
+                .expect(200)
+                .expect("Content-Type", /application\/json/);
+        }, 100000);
 
-        console.log(ok);
+        test("Size is correct", async () => {
+            const response = await api.get("/api/users");
+            expect(response.body.length).toBe(initialUsers.length);
+        });
     });
+
+    describe("POST tests", () => {
+        const exampleUser = {
+            username: "zorro",
+            name: "zorrito zas",
+            password: "zulmira",
+        };
+        test("status 201", async () => {
+            const result = await api.post("/api/users").send(exampleUser);
+            expect(result.status).toBe(201);
+        });
+    });
+});
+
+afterAll(() => {
+    mongoose.connection.close();
 });

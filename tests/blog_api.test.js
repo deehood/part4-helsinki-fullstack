@@ -27,7 +27,7 @@ describe("Blog API tests", () => {
 
         test("there are 6 initial  blogs", async () => {
             const response = await api.get("/api/blogs");
-
+            console.log(response.body);
             expect(response.body).toHaveLength(6);
         });
 
@@ -109,7 +109,7 @@ describe("Blog API tests", () => {
             await api.post("/api/blogs").send(exampleBlog);
 
             blogs = await api.get("/api/blogs");
-            afterFileSize = blogs.body.length;
+            const afterFileSize = blogs.body.length;
             expect(afterFileSize).toBe(beforeFileSize + 1);
         });
 

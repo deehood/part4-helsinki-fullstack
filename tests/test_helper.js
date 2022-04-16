@@ -1,10 +1,5 @@
 // const _ = require("lodash");
 
-// const { response } = require("../app");
-
-const Blog = require("../models/blog");
-const User = require("../models/user");
-
 const initialUsers = [
     {
         username: "jinfo",
@@ -56,12 +51,6 @@ const initialBlogs = [
         likes: 2,
     },
 ];
-
-const getUsernames = async (database) => {
-    const response = await database.find({});
-
-    console.log(response.body);
-};
 
 // eslint-disable-next-line no-unused-vars
 const dummy = (blogs) => {
@@ -138,5 +127,4 @@ module.exports = {
     mostLikes,
     initialBlogs,
     initialUsers,
-    getUsernames,
 };
