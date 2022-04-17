@@ -7,5 +7,5 @@ const logger = require("./utils/logger");
 http.createServer(app);
 
 app.listen(config.PORT, () => {
-    logger.info(`Server running on port ${config.PORT}`);
+  logger.info(`Server running on port ${config.PORT}`);
 });
