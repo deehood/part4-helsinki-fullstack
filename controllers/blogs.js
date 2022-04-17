@@ -4,64 +4,64 @@ const Blog = require("../models/blog");
 const User = require("../models/user");
 
 const getUser = async () => {
-  const user = await User.findOne({});
-  return user;
+    const user = await User.findOne({});
+    return user;
 };
 
 blogRouter.get("/", async (request, response) => {
-  //express-async-errors is taking care of try catch
-  const blogs = await Blog.find({}).populate("user", {
-    username: 1,
-    name: 1,
-  });
+    //express-async-errors is taking care of try catch
+    const blogs = await Blog.find({}).populate("user", {
+        username: 1,
+        name: 1,
+    });
 
-  response.json(blogs);
+    response.json(blogs);
 });
 
 blogRouter.get("/:id", async (request, response) => {
-  const blogs = await Blog.findById(request.params.id);
-  response.json(blogs);
+    const blogs = await Blog.findById(request.params.id);
+    response.json(blogs);
 });
 
 blogRouter.delete("/:id", async (request, response) => {
-  await Blog.findByIdAndRemove(request.params.id);
+    await Blog.findByIdAndRemove(request.params.id);
 
-  response.status(204).end();
+    response.status(204).end();
 });
 
 blogRouter.put("/:id", async (request, response) => {
-  const updatedBlog = request.body;
+    const updatedBlog = request.body;
 
-  await Blog.findByIdAndUpdate(request.params.id, updatedBlog, {
-    new: true,
-  });
-  response.status(204).end();
+    await Blog.findByIdAndUpdate(request.params.id, updatedBlog, {
+        new: true,
+    });
+    response.status(204).end();
 });
 
 blogRouter.post("/", async (request, response) => {
-  const blog = new Blog(request.body);
+    const blog = new Blog(request.body);
 
-  // deaults to 0 if not present
-  if (!("likes" in blog.toJSON())) blog["likes"] = 0;
+    // deaults to 0 if not present
+    if (!("likes" in blog.toJSON())) blog["likes"] = 0;
 
-  // sends 400 status if both url and title not present
-  if (!("title" in blog.toJSON()) && !("url" in blog.toJSON())) {
-    response.status(400).end();
-    return;
-  }
+    // sends 400 status if both url and title not present
+    if (!("title" in blog.toJSON()) && !("url" in blog.toJSON())) {
+        response.status(400).end();
+        return;
+    }
 
-  // Save userid in blog db
-  let user = await getUser();
-  user && (blog.user = user._id);
-  await blog.save();
+    // Save userid in blog db
+    let user = await getUser();
+    user && (blog.user = user._id);
+    await blog.save();
 
-  // save blogid in user db
-  if (user) {
-    user.blog += blog._id;
-    await user.save();
-  }
+    // save blogid in user db
+    if (user) {
+        user.blog += blog._id;
+        await user.save();
+    }
 
-  response.status(201).json(blog);
+    response.status(201).json(blog);
 });
 
 module.exports = blogRouter;
