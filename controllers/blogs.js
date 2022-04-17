@@ -52,12 +52,14 @@ blogRouter.post("/", async (request, response) => {
 
     // Save userid in blog db
     let user = await getUser();
-    blog.user = user._id;
+    user && (blog.user = user._id);
     await blog.save();
 
     // save blogid in user db
-    user.blog += blog._id;
-    await user.save();
+    if (user) {
+        user.blog += blog._id;
+        await user.save();
+    }
 
     response.status(201).json(blog);
 });

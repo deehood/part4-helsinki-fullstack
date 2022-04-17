@@ -4,7 +4,7 @@ const User = require("../models/user");
 const Blog = require("../models/blog");
 
 const getBlogs = async () => {
-    const blog = await Blog.findOne({});
+    const blog = await Blog.find({});
     return blog;
 };
 
@@ -39,7 +39,7 @@ userRouter.post("/", async (request, response) => {
     const saltRounds = 10;
     const passwordHash = await bcrypt.hash(password, saltRounds);
 
-    let blogs = [];
+    let blogs = await getBlogs();
 
     const user = new User({
         username,
