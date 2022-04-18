@@ -11,6 +11,11 @@ const initialUsers = [
     name: "monica lewinski",
     password: "cigar",
   },
+  {
+    username: "micas",
+    name: "mikosio roma",
+    password: "coisas",
+  },
 ];
 
 const initialBlogs = [
