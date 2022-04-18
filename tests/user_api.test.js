@@ -12,6 +12,7 @@ beforeEach(async () => {
   for (let user of initialUsers) {
     let userObject = new User(user);
     await userObject.save();
+    console.log(userObject);
   }
 });
 

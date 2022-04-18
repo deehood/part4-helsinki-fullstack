@@ -47,7 +47,6 @@ userRouter.post("/", async (request, response) => {
     passwordHash,
     blogs,
   });
-
   const savedUser = await user.save();
 
   response.status(201).json(savedUser);
