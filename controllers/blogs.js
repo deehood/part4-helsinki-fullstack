@@ -1,12 +1,8 @@
 const blogRouter = require("express").Router();
+const jwt = require("jsonwebtoken");
 const Blog = require("../models/blog");
-
 const User = require("../models/user");
-
-const getUser = async () => {
-  const user = await User.findOne({});
-  return user;
-};
+const { SECRET } = require("../utils/config");
 
 blogRouter.get("/", async (request, response) => {
   //express-async-errors is taking care of try catch
@@ -38,8 +34,24 @@ blogRouter.put("/:id", async (request, response) => {
   response.status(204).end();
 });
 
+const getTokenFrom = (request) => {
+  const authorization = request.get("authorization");
+  if (authorization && authorization.toLowerCase().startsWith("bearer ")) {
+    return authorization.substring(7);
+  }
+  return null;
+};
+
 blogRouter.post("/", async (request, response) => {
   const blog = new Blog(request.body);
+
+  //check token
+
+  const token = getTokenFrom(request);
+  const decodedToken = jwt.verify(token, SECRET);
+  if (!decodedToken.id) {
+    return response.status(401).json({ error: "token missing or invalid" });
+  }
 
   // deaults to 0 if not present
   if (!("likes" in blog.toJSON())) blog["likes"] = 0;
@@ -51,13 +63,14 @@ blogRouter.post("/", async (request, response) => {
   }
 
   // Save userid in blog db
-  let user = await getUser();
+  let user = await User.findById(decodedToken.id);
   user && (blog.user = user._id);
   await blog.save();
 
+  console.log(user);
   // save blogid in user db
   if (user) {
-    user.blog += blog._id;
+    user.blogs.push(blog._id);
     await user.save();
   }
 

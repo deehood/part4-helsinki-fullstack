@@ -9,7 +9,11 @@ const getBlogs = async () => {
 };
 
 userRouter.get("/", async (request, response) => {
-  const users = await User.find({}).populate("blogs");
+  const users = await User.find({}).populate("blogs", {
+    author: 1,
+    url: 1,
+    likes: 7,
+  });
 
   response.json(users);
 });
