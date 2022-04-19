@@ -24,7 +24,6 @@ describe("LOGIN POST", () => {
   test("Status should be 201", async () => {
     const result = await api.post("/").send(exampleLogin);
     expect(result.status).toBe(201);
-    console.log(result.body);
   });
 });
 
