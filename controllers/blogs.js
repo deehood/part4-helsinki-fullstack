@@ -20,8 +20,7 @@ blogRouter.get("/:id", async (request, response) => {
 
 blogRouter.delete("/:id", async (request, response) => {
   const user = request.user;
-  console.log(user);
-  console.log(user._id.toString());
+
   const blog = await Blog.findById(request.params.id);
 
   if (blog) {
