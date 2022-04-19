@@ -1,9 +1,7 @@
 const blogRouter = require("express").Router();
-const jwt = require("jsonwebtoken");
 const Blog = require("../models/blog");
 
 const User = require("../models/user");
-const { SECRET } = require("../utils/config");
 
 blogRouter.get("/", async (request, response) => {
   //express-async-errors is taking care of try catch
@@ -21,29 +19,26 @@ blogRouter.get("/:id", async (request, response) => {
 });
 
 blogRouter.delete("/:id", async (request, response) => {
-  const decodedToken = jwt.verify(request.token, SECRET);
-
-  if (!decodedToken.id) {
-    return response.status(401).json({ error: "token missing or invalid" });
-  }
-
+  const user = request.user;
+  console.log(user);
+  console.log(user._id.toString());
   const blog = await Blog.findById(request.params.id);
 
   if (blog) {
-    if (blog.user.toString() === decodedToken.id.toString()) {
+    if (blog.user.toString() === user._id.toString()) {
       //delete blog
       await Blog.findByIdAndRemove(request.params.id);
 
       // delete blog in user blogs
 
-      const user = await User.findById(decodedToken.id);
-
       const newUserblogs = await user.blogs.filter(
         (x) => x.toString() !== request.params.id
       );
 
-      await User.findByIdAndUpdate(decodedToken.id, { blogs: newUserblogs });
-      response.status(204).json({ yay: "deleted" });
+      await User.findByIdAndUpdate(user._id.toString(), {
+        blogs: newUserblogs,
+      });
+      response.status(204).end();
     } else response.status(401).json({ error: "invalid deletion" });
   } else response.status(401).send({ error: "Not found" });
 });
@@ -58,12 +53,7 @@ blogRouter.put("/:id", async (request, response) => {
 });
 
 blogRouter.post("/", async (request, response) => {
-  //check token
-
-  const decodedToken = jwt.verify(request.token, SECRET);
-  if (!decodedToken.id) {
-    return response.status(401).json({ error: "token missing or invalid" });
-  }
+  const user = request.user;
 
   const blog = new Blog(request.body);
 
@@ -77,7 +67,7 @@ blogRouter.post("/", async (request, response) => {
   }
 
   // Save userid in blog db
-  let user = await User.findById(decodedToken.id);
+  // let user = await User.findById(decodedToken.id);
   user && (blog.user = user._id);
   await blog.save();
 
